@@ -65,7 +65,6 @@ export default {
           state: 'fail',
         })
       }
-      console.log(this.cookList)
     },
   },
 }
