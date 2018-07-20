@@ -1,12 +1,11 @@
 <template>
-  <web-view src="https://chufang.melive.cc"></web-view>
+<div>2</div>
 </template>
 
 <script>
 
 export default {
-  data() {
-  }
+
 }
 </script>
 
