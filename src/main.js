@@ -1,30 +1,9 @@
 import Vue from 'vue'
 import App from './App'
+import './utils/index'
 
 Vue.config.productionTip = false
 App.mpType = 'app'
-
-wx.$http = function({
-  url,
-  data,
-  header,
-  method,
-}) {
-  return new Promise((resolve, reject) => {
-    wx.request({
-      url: `https://chufang.melive.cc/api/v1${url}`,
-      data: data || {},
-      method: 'get' || method,
-      hedaer: header || {},
-      success(res) {
-        resolve(res)
-      },
-      fail(err) {
-        reject(err)
-      },
-    })
-  })
-}
 
 const app = new Vue(App)
 app.$mount()
