@@ -65,7 +65,7 @@ export default {
           url: '/categores',
         })
 
-        this.tabs = res.data.recommend
+        this.tabs = res.data.slice(0, 4)
       } catch (err) {
         wx.$showToast({
           title: '获取推荐失败',
