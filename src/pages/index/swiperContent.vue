@@ -36,34 +36,23 @@ export default {
   },
   data() {
     return {
-      cookList: [],
     }
+  },
+  computed: {
+    cookList() {
+      return this.$store.getters.cookList
+    },
   },
   watch: {
     activedIndex(index) {
       // 切换 tab 的时候触发更新
-      this.getCookList(index)
+      const activedTab = this.tabs[index]
+      this.$store.dispatch('getCookList', activedTab.id)
     },
     tabs(tabs) {
       // 获取到 tab 信息的时候触发更新
       if (tabs.length) {
-        this.getCookList(this.activedIndex)
-      }
-    },
-  },
-  methods: {
-    async getCookList(index) {
-      const activedTab = this.tabs[index]
-      try {
-        const res = await wx.$http({
-          url: `/cook/${activedTab.id}`,
-        })
-        this.cookList = res.data
-      } catch (err) {
-        wx.$showToast({
-          title: '获取列表失败',
-          state: 'fail',
-        })
+        this.$store.dispatch('getCookList', tabs[0].id)
       }
     },
   },
