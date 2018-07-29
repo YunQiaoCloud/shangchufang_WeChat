@@ -20,8 +20,7 @@ const actions = {
       const res = await wx.$http({
         url: `/cook/${index}`,
       })
-      // const activedTab = this.tabs[index]
-      // this.cookList = res.data
+
       commit('setCookList', res.data)
     } catch (err) {
       wx.$showToast({

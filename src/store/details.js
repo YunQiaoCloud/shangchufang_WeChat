@@ -1,5 +1,14 @@
 const state = {
-  cookDetails: [],
+  cookDetails: {
+    title: '',
+    tags: '',
+    albums: [],
+    burden: '',
+    id: -1,
+    imtro: '',
+    ingredients: '',
+    steps: [],
+  },
 }
 
 const getters = {
@@ -15,18 +24,20 @@ const mutations = {
 }
 
 const actions = {
-  async getCookDetails({ commit }, cookId) {
-    try {
-      const res = await wx.$http({
-        url: `/cook_detail/${cookId}`,
-      })
+  async getCookDetails({ commit, state }, cookId) {
+    if (!state.cookDetails.id === cookId) {
+      try {
+        const res = await wx.$http({
+          url: `/cook_detail/${cookId}`,
+        })
 
-      commit('setCookDetails', res.data)
-    } catch (err) {
-      wx.$showToast({
-        title: '获取菜品详情失败',
-        state: 'fail',
-      })
+        commit('setCookDetails', res.data)
+      } catch (err) {
+        wx.$showToast({
+          title: '获取菜品详情失败',
+          state: 'fail',
+        })
+      }
     }
   },
 }

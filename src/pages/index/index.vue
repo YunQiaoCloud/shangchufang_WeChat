@@ -25,7 +25,6 @@ import swiperContent from './swiperContent.vue'
 export default {
   data() {
     return {
-      banners: [],
       tabs: [],
       activedIndex: 0,
     }

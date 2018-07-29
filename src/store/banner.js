@@ -21,19 +21,21 @@ const mutations = {
 }
 
 const actions = {
-  async getBanner({ commit }) {
-    try {
-      const res = await wx.$http({
-        url: '/banner',
-      })
-      const bannerList = res.data
+  async getBanner({ commit, state }) {
+    if (!state.bannerList.length) {
+      try {
+        const res = await wx.$http({
+          url: '/banner',
+        })
+        const bannerList = res.data
 
-      commit('setBanner', bannerList)
-    } catch (err) {
-      wx.$showToast({
-        title: '获取banner失败',
-        state: 'fail',
-      })
+        commit('setBanner', bannerList)
+      } catch (err) {
+        wx.$showToast({
+          title: '获取banner失败',
+          state: 'fail',
+        })
+      }
     }
   },
 }
