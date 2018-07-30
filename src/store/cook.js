@@ -23,7 +23,6 @@ const getters = {
     return []
   },
   activeCategoryId(state) {
-    console.log(state)
     return state.activeCategoryId
   },
 }
