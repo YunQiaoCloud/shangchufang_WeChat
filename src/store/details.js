@@ -25,7 +25,7 @@ const mutations = {
 
 const actions = {
   async getCookDetails({ commit, state }, cookId) {
-    if (!state.cookDetails.id === cookId) {
+    if (state.cookDetails.id !== cookId) {
       try {
         const res = await wx.$http({
           url: `/cook_detail/${cookId}`,

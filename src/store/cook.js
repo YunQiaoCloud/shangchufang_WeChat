@@ -1,32 +1,39 @@
 const state = {
-  cookList: [],
+  cookList: {
+    categoresId: '',
+    list: {},
+  },
 }
 
 const getters = {
   cookList(state) {
-    return state.cookList
+    return state.cookList.list
   },
 }
 
 const mutations = {
   setCookList(state, cookList) {
-    state.cookList = cookList
+    state.cookList.list = cookList
+    console.log(state.cookList, 'cookList')
   },
 }
 
 const actions = {
-  async getCookList({ commit }, index) {
-    try {
-      const res = await wx.$http({
-        url: `/cook/${index}`,
-      })
-
-      commit('setCookList', res.data)
-    } catch (err) {
-      wx.$showToast({
-        title: '获取列表失败',
-        state: 'fail',
-      })
+  async getCookList({ commit, state }, index) {
+    if (state.cookList.categoresId !== index) {
+      try {
+        const res = await wx.$http({
+          url: `/cook/${index}`,
+        })
+        const categoresId = index
+        state.cookList.categoresId = categoresId
+        commit('setCookList', res.data)
+      } catch (err) {
+        wx.$showToast({
+          title: '获取列表失败',
+          state: 'fail',
+        })
+      }
     }
   },
 }
