@@ -13,8 +13,8 @@
       </block>
     </swiper>
 
-    <swiper-tab :tabs="tabs" :activedIndex="activedIndex" @setActivedIndex="activedIndex = $event"/>
-    <swiper-content :tabs="tabs" :activedIndex="activedIndex"/>
+    <swiper-tab :tabs="tabs"/>
+    <swiper-content :tabs="tabs"/>
   </div>
 </template>
 
@@ -26,7 +26,6 @@ export default {
   data() {
     return {
       tabs: [],
-      activedIndex: 0,
     }
   },
   components: {

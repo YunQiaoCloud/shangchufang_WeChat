@@ -27,33 +27,10 @@ export default {
         return []
       },
     },
-    activedIndex: {
-      type: Number,
-      default() {
-        return 0
-      },
-    },
-  },
-  data() {
-    return {
-    }
   },
   computed: {
     cookList() {
       return this.$store.getters.cookList
-    },
-  },
-  watch: {
-    activedIndex(index) {
-      // 切换 tab 的时候触发更新
-      const activedTab = this.tabs[index]
-      this.$store.dispatch('getCookList', activedTab.id)
-    },
-    tabs(tabs) {
-      // 获取到 tab 信息的时候触发更新
-      if (tabs.length) {
-        this.$store.dispatch('getCookList', tabs[0].id)
-      }
     },
   },
 }
