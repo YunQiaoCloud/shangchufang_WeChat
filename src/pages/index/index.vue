@@ -6,15 +6,15 @@
       indicator-color="rgba(128, 128, 128, 0.5)"
       indicator-active-color="rgba(85, 85, 85, 1)"
       circular="true">
-      <block v-for="item in banners" :key="item.id">
+      <block v-for="item in banner" :key="item.id">
         <swiper-item class="swiper-banner-item">
           <image :src="item.coverImg" class="slide-image" width="355" height="150"/>
         </swiper-item>
       </block>
     </swiper>
 
-    <swiper-tab :tabs="tabs" :activedIndex="activedIndex" @setActivedIndex="activedIndex = $event"/>
-    <swiper-content :tabs="tabs" :activedIndex="activedIndex"/>
+    <swiper-tab :tabs="tabs"/>
+    <swiper-content :tabs="tabs"/>
   </div>
 </template>
 
@@ -25,54 +25,25 @@ import swiperContent from './swiperContent.vue'
 export default {
   data() {
     return {
-      banners: [],
       tabs: [],
-      activedIndex: 0,
     }
   },
   components: {
     swiperTab,
     swiperContent,
   },
-  mounted() {
-    this.getBanner()
-    this.getCategores()
+  computed: {
+    banner() {
+      return this.$store.getters.banner
+    },
+    categores() {
+      const tabList = this.$store.getters.categores
+      this.tabs = tabList.slice(0, 4)
+    },
   },
-  methods: {
-    async getBanner() {
-      try {
-        const res = await wx.$http({
-          url: '/banner',
-        })
-
-        const banners = res.data.map((item) => ({
-          id: item.id,
-          coverImg: `https://chufang.melive.cc${item.coverImg}`,
-          title: item.title,
-        }))
-
-        this.banners = banners
-      } catch (err) {
-        wx.$showToast({
-          title: '获取banner失败',
-          state: 'fail',
-        })
-      }
-    },
-    async getCategores() {
-      try {
-        const res = await wx.$http({
-          url: '/categores',
-        })
-
-        this.tabs = res.data.slice(0, 4)
-      } catch (err) {
-        wx.$showToast({
-          title: '获取推荐失败',
-          state: 'fail',
-        })
-      }
-    },
+  async created() {
+    this.$store.dispatch('getBanner')
+    this.$store.dispatch('getCategores')
   },
 }
 </script>
