@@ -1,10 +1,10 @@
 <template>
-  <div :class="['swiper-tab', 'actived-' + activeIndex]">
+  <div :class="['swiper-tab', 'actived-' + activedIndex]">
     <div
-      :class="['swiper-tab-item', {'actived': activeIndex === index}]"
+      :class="['swiper-tab-item', {'actived': activedIndex === index}]"
       v-for="(item, index) in tabs"
       :key="item.id"
-      @click="changeAcviteIndex(index)">
+      @click="$emit('setActivedIndex', index)">
       {{item.name}}
     </div>
   </div>
@@ -21,22 +21,18 @@ export default {
         return []
       },
     },
-  },
-  computed: {
-    activeIndex() {
-      return this.$store.getters.activeCategoryIndex
+    activedIndex: {
+      type: Number,
+      default() {
+        return 0
+      },
     },
   },
-  mounted() {
-    // 加载的时候判断一下，如果是 -1 的初始状态，则设置为 0 获取数据
-    if (this.activeIndex === -1) {
-      this.changeAcviteIndex(0)
+  data() {
+    return {
     }
   },
-  methods: {
-    changeAcviteIndex(index) {
-      this.$store.dispatch('setAcviteCategoryIndex', index)
-    },
+  mounted() {
   },
 }
 </script>

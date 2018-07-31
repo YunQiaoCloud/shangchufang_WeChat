@@ -27,10 +27,44 @@ export default {
         return []
       },
     },
+    activedIndex: {
+      type: Number,
+      default() {
+        return 0
+      },
+    },
   },
-  computed: {
-    cookList() {
-      return this.$store.getters.cookList
+  data() {
+    return {
+      cookList: [],
+    }
+  },
+  watch: {
+    activedIndex(index) {
+      // 切换 tab 的时候触发更新
+      this.getCookList(index)
+    },
+    tabs(tabs) {
+      // 获取到 tab 信息的时候触发更新
+      if (tabs.length) {
+        this.getCookList(this.activedIndex)
+      }
+    },
+  },
+  methods: {
+    async getCookList(index) {
+      const activedTab = this.tabs[index]
+      try {
+        const res = await wx.$http({
+          url: `/cook/${activedTab.id}`,
+        })
+        this.cookList = res.data
+      } catch (err) {
+        wx.$showToast({
+          title: '获取列表失败',
+          state: 'fail',
+        })
+      }
     },
   },
 }
