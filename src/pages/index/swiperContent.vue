@@ -3,15 +3,17 @@
     <div class="swiper-content-item"
       v-for="item in cookList"
       :key="item.id">
-      <div class="cover" :style="{'background-image': 'url('+item.albums[0]+')'}"/>
-      <div class="body">
-        <h6>
-        {{item.title}}
-        </h6>
-        <p>
-        {{item.imtro}}
-        </p>
-      </div>
+      <a :href="'/pages/detail/main?id=' + item.id">
+        <div class="cover" :style="{'background-image': 'url('+item.albums[0]+')'}"/>
+        <div class="body">
+          <h6>
+          {{item.title}}
+          </h6>
+          <p>
+          {{item.imtro}}
+          </p>
+        </div>
+      </a>
     </div>
   </div>
 </template>
@@ -46,6 +48,11 @@ export default {
 .swiper-content-item {
   display: flex;
   margin-bottom: 20rpx;
+
+  a {
+    display: flex;
+    overflow: auto;
+  }
 
   .cover {
     margin-right: 20rpx;
