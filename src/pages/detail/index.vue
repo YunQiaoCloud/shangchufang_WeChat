@@ -6,9 +6,10 @@
     <div class="cook-detail-info">
       <div class="cook-detail-title">
         <h2>{{ cookDetail.title }}</h2>
+        <div class="cook-detail-collect" @click="onCollect">{{ collectText }}</div>
       </div>
       <div class="cook-detail-tags">
-        <span v-for="tag in splitTags">{{ tag }}</span>
+        <span v-for="tag in splitTags" :key="index">{{ tag }}</span>
       </div>
       <div class="cook-detail-imtro">
         <p>{{ cookDetail.imtro }}</p>
@@ -17,9 +18,19 @@
         <h2>用料</h2>
       </div>
       <div class="cook-detail-material">
-        <p v-for="(material, index) in splitMaterials" :key="index">
-          <span>{{ material }}</span>
+        <p v-for="material in splitMaterials" :key="index">
+          <span>{{ material[0] }}</span>
+          <span>{{ material[1] }}</span>
         </p>
+      </div>
+      <div class="cook-detail-title">
+        <h2>{{ cookDetail.title }}的做法</h2>
+      </div>
+      <div class="cook-detail-practice">
+        <div class="cook-detail-step" v-for="step in cookDetail.steps" :key="index">
+          <p>{{ step.step }}</p>
+          <image :src="step.img" />
+        </div>
       </div>
     </div>
   </div>
@@ -27,14 +38,12 @@
 
 <script>
 export default {
-  data() {
-    return {
-
-    }
+  data: {
+    collectText: '收藏',
+    isCollect: false,
   },
   computed: {
     cookDetail() {
-      console.log(this.$store.getters.cookDetails)
       return this.$store.getters.cookDetails
     },
     splitTags() {
@@ -44,18 +53,22 @@ export default {
     splitMaterials() {
       const materialsList = `${this.cookDetail.ingredients};${this.cookDetail.burden}`
       const splitMaterialStr = materialsList.split(';').map((material) => material)
-      console.log(splitMaterialStr)
-      return splitMaterialStr
-      // return splitMaterialStr.toString().split(',').map((item) => item)
-      // console.log(this.cookDetail.ingredients)
-      // console.log(materialsList)
-      // console.log(test)
+      return splitMaterialStr.map((item) => item.split(','))
     },
   },
   async mounted() {
-    console.log(this.$root.$mp.query.id)
-    const cookId = this.$root.$mp.query.id || 909
+    const cookId = this.$root.$mp.query.id
     this.$store.dispatch('getCookDetails', cookId)
+  },
+  methods: {
+    onCollect() {
+      this.isCollect = !this.isCollect
+      if (this.isCollect) {
+        this.collectText = '取消收藏'
+      } else {
+        this.collectText = '收藏'
+      }
+    },
   },
 }
 </script>
@@ -70,12 +83,25 @@ export default {
   }
 
   .cook-detail-title {
+    display: flex;
+    align-items: center;
     margin-bottom: 20rpx;
 
     h2 {
       margin: 10px 0;
       font-size: 40rpx;
       font-weight: bold;
+    }
+
+    .cook-detail-collect {
+      height: 40rpx;
+      padding: 10rpx;
+      line-height: 20rpx;
+      color: #fff;
+      background-color: #108ee9;
+      border: 1rpx solid #108ee9;
+      border-radius: 10rpx;
+      margin-left: 20rpx;
     }
   }
 
@@ -97,11 +123,37 @@ export default {
     }
   }
 
+  .cook-detail-imtro {
+    font-size: 24rpx;
+    margin: 30rpx 0;
+  }
+
   .cook-detail-material {
 
     p {
       display: flex;
-      border-bottom: 1px solid #d5d5d5;
+      justify-content: space-between;
+      width: 100%;
+      height: 80rpx;
+      line-height: 60rpx;
+      border-bottom: 1rpx solid #d5d5d5;
+      padding: 10px 0;
+    }
+  }
+
+  .cook-detail-step {
+    display: flex;
+    justify-content: space-between;
+    margin: 30rpx 0;
+
+    p {
+      flex: 1;
+    }
+
+    image {
+      width: 150rpx;
+      height: 150rpx;
+      margin-left: 20rpx;
     }
   }
 </style>
